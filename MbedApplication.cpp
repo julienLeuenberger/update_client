@@ -252,7 +252,10 @@ int32_t MbedApplication::readApplicationHeader() {
     switch (m_applicationHeader.headerVersion) {
       case HEADER_VERSION_V2: {
         // TODO : check magic, if successful read the entire header and call parseInternalHeaderV2
-
+        result = UC_ERR_NONE;
+        uint8_t read_buffer[HEADER_SIZE_V2] = {0};
+        m_flashUpdater.read(read_buffer, m_applicationHeaderAddress, HEADER_SIZE_V2);
+        result = parseInternalHeaderV2(read_buffer);
       }   
       break;
 
