@@ -254,7 +254,7 @@ int32_t MbedApplication::readApplicationHeader() {
         // TODO : check magic, if successful read the entire header and call parseInternalHeaderV2
         if (m_applicationHeader.magic == 0x5a51b3d4)
         {
-          tr_debug("Magic number is equal to 0x5a51b3d4");
+          tr_debug(" Magic number is equal to 0x5a51b3d4");
           result = UC_ERR_NONE;
           uint8_t read_buffer[HEADER_SIZE_V2] = {0};
           m_flashUpdater.read(read_buffer, m_applicationHeaderAddress, HEADER_SIZE_V2);
@@ -262,7 +262,7 @@ int32_t MbedApplication::readApplicationHeader() {
         }
         else
         {
-          tr_debug("Magic number is not equal to 0x5a51b3d4");
+          tr_debug(" Magic number is not equal to 0x5a51b3d4");
         }
         
       }   
