@@ -7,7 +7,6 @@
 #define TRACE_GROUP "CandidateApplications"
 #endif // MBED_CONF_MBED_TRACE_ENABLE
 
-#define POST_APPLICATION_ADDR 0x08040080
 
 namespace update_client {
 
