@@ -47,11 +47,13 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
   uint32_t slot_i = 2; // Valeur différente de 0 ou 1
-  if (hasValidNewerApplication(getMbedApplication(0), 0))
+  const uint32_t a = 0;
+  const uint32_t b = 1;
+  if (hasValidNewerApplication(getMbedApplication(0), a))
   {
     slot_i = 0; 
   }
-  if (hasValidNewerApplication(getMbedApplication(1), 1))
+  if (hasValidNewerApplication(getMbedApplication(1), b))
   {
     slot_i = 1; 
   }
