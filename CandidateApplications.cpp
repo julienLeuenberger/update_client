@@ -7,7 +7,6 @@
 #define TRACE_GROUP "CandidateApplications"
 #endif // MBED_CONF_MBED_TRACE_ENABLE
 
-#define POST_APPLICATION_ADDR 0x08040080
 
 namespace update_client {
 
@@ -96,7 +95,7 @@ int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_
    return UC_ERR_NONE;
 }
 
-bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex) const {
+bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex){
   tr_debug(" Checking for newer applications on %d slots", m_nbrOfSlots);
   newestSlotIndex = m_nbrOfSlots;
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++) {    
@@ -127,7 +126,7 @@ bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeAppl
   return newestSlotIndex != m_nbrOfSlots;
 }
 
-#if defined(POST_APPLICATION_ADDR)
+
 int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t destHeaderAddress) {  
   tr_debug(" Installing candidate application at slot %d as active application", slotIndex);
   const uint32_t pageSize = m_flashUpdater.get_page_size();
@@ -173,5 +172,5 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
 
   return UC_ERR_NONE;
 }
-#endif
+
 } // namespace
