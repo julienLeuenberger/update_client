@@ -47,13 +47,11 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
   uint32_t slot_i = 2; // Valeur différente de 0 ou 1
-  const uint32_t a = 0;
-  const uint32_t b = 1;
-  if (hasValidNewerApplication(getMbedApplication(0), a))
+  if (hasValidNewerApplication(getMbedApplication(0), 0))
   {
     slot_i = 0; 
   }
-  if (hasValidNewerApplication(getMbedApplication(1), b))
+  if (hasValidNewerApplication(getMbedApplication(1), 1))
   {
     slot_i = 1; 
   }
@@ -97,7 +95,7 @@ int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_
    return UC_ERR_NONE;
 }
 
-bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex) const {
+bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex){
   tr_debug(" Checking for newer applications on %d slots", m_nbrOfSlots);
   newestSlotIndex = m_nbrOfSlots;
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++) {    
