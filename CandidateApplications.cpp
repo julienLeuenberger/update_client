@@ -7,6 +7,8 @@
 #define TRACE_GROUP "CandidateApplications"
 #endif // MBED_CONF_MBED_TRACE_ENABLE
 
+#define POST_APPLICATION_ADDR 0x08040080
+
 namespace update_client {
 
 CandidateApplications::CandidateApplications(FlashUpdater& flashUpdater, uint32_t storageAddress, uint32_t storageSize, uint32_t headerSize, uint32_t nbrOfSlots) :
@@ -45,7 +47,17 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
-  return 0;
+  uint32_t slot_i = 2; // Valeur différente de 0 ou 1
+  if (hasValidNewerApplication(getMbedApplication(0)))
+  {
+    slot_i = 0; 
+  }
+  if (hasValidNewerApplication(getMbedApplication(1)))
+  {
+    slot_i = 1; 
+  }
+
+  return slot_i;
 }
 
 int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_t& applicationAddress, uint32_t& slotSize) const {
