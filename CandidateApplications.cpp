@@ -100,7 +100,7 @@ int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_
    return UC_ERR_NONE;
 }
 
-bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex){
+bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex) const {
   tr_debug(" Checking for newer applications on %d slots", m_nbrOfSlots);
   newestSlotIndex = m_nbrOfSlots;
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++) {    
