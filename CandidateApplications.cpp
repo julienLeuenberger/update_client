@@ -74,18 +74,18 @@ int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_
    // sector boundary and we cannot go outside user defined storage area, hence
    // rounding up to sector boundary
    uint32_t storageStartAddr = m_flashUpdater.alignAddressToSector(m_storageAddress, false);
-   tr_debug(" Storage start address (slot %d): 0x%08x", slotIndex, storageStartAddr);
+   tr_debug(" Storage start address for all slots: 0x%08x", storageStartAddr);
 
    // find the end address of the whole storage area. It needs to be aligned to
    // sector boundary and we cannot go outside user defined storage area, hence
    // rounding down to sector boundary 
    uint32_t storageEndAddr = m_flashUpdater.alignAddressToSector(m_storageAddress + m_storageSize, true);
-   tr_debug(" Storage end address (slot %d): 0x%08x", slotIndex, storageEndAddr);
+   tr_debug(" Storage end addressfor all slots: 0x%08x", storageEndAddr);
    
    // find the maximum size each slot can have given the start and end, without
    // considering the alignment of individual slots
    uint32_t maxSlotSize = (storageEndAddr - storageStartAddr) / m_nbrOfSlots;
-   tr_debug(" maxSlotSize (slot %d): %d", slotIndex, maxSlotSize);
+   tr_debug(" maxSlotSize : %d", maxSlotSize);
 
    // find the start address of slot. It needs to align to sector boundary. We
    // choose here to round down at each slot boundary 
