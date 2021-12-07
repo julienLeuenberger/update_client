@@ -47,6 +47,7 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
   uint32_t oldestValueslot = 0;
+  uint32_t slot = 0;
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
   {
     MbedApplication& app = getMbedApplication(slotIndex);
@@ -54,14 +55,15 @@ uint32_t CandidateApplications::getSlotForCandidate() {
     {
       if(app.isNewerThan(getMbedApplication(oldestValueslot)))
       {
-        return oldestValueslot;
+        slot = oldestValueslot;
       }
     }
     else
     {
-      return slotIndex;
+      slot = slotIndex;
     }
   }
+  return slot;
 }
 
 int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_t& applicationAddress, uint32_t& slotSize) const {

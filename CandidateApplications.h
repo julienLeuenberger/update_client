@@ -6,7 +6,7 @@
 #include "MbedApplication.h"
 #include "FlashUpdater.h"
 
-#define POST_APPLICATION_ADDR 0x08040080
+
 
 namespace update_client {
 
