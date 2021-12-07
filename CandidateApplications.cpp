@@ -61,7 +61,7 @@ uint32_t CandidateApplications::getSlotForCandidate() {
     }
     else
     {
-      slot = slotIndex;
+      return slotIndex;
     }
   }
   return slot;
