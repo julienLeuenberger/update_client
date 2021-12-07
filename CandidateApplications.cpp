@@ -50,7 +50,7 @@ uint32_t CandidateApplications::getSlotForCandidate() {
   for (uint32_t slotIndex = 0; slotIndex < nbrOfSlots; slotIndex++)
   {
     MbedApplication& app = getMbedApplication(slotIndex);
-    if(app.isValid)
+    if(app.isValid())
     {
       if(app.isNewerThan(getMbedApplication(oldestValueslot));)
       {
