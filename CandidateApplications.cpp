@@ -47,7 +47,7 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
   uint32_t oldestValueslot = 0;
-  for (uint32_t slotIndex = 0; slotIndex < nbrOfSlots; slotIndex++)
+  for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
   {
     MbedApplication& app = getMbedApplication(slotIndex);
     if(app.isValid())
