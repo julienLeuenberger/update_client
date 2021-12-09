@@ -50,12 +50,6 @@ uint32_t CandidateApplications::getSlotForCandidate() {
   uint32_t oldestValueslot = 0;
   uint32_t slot = 0;
 
-  //
-  struct APP_INFO{
-    bool valid;
-    uint64_t firmwareVersion;
-  };
-
   APP_INFO app_info[m_nbrOfSlots];
   // Remplir un tableau de type APP_INFO
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
