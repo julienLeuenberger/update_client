@@ -54,6 +54,7 @@ uint32_t CandidateApplications::getSlotForCandidate() {
   // Remplir un tableau de type APP_INFO
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
   {
+    MbedApplication& new_app = getMbedApplication(slotIndex);
     if(new_app.isValid())
     {
       app_info[slotIndex].valid = true;
