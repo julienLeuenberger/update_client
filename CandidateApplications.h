@@ -10,6 +10,13 @@
 
 namespace update_client {
 
+  
+struct APP_INFO{
+  bool valid;
+  uint64_t firmwareVersion;
+};
+
+
 class CandidateApplications {
 public:
   CandidateApplications(FlashUpdater& flashUpdater, uint32_t storageAddress, uint32_t storageSize, uint32_t headerSize, uint32_t nbrOfSlots);

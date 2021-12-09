@@ -49,21 +49,46 @@ uint32_t CandidateApplications::getSlotForCandidate() {
   // TODO
   uint32_t oldestValueslot = 0;
   uint32_t slot = 0;
+
+  //
+  struct APP_INFO{
+    bool valid;
+    uint64_t firmwareVersion;
+  };
+
+  APP_INFO app_info[m_nbrOfSlots];
+  // Remplir un tableau de type APP_INFO
   for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
   {
-    MbedApplication& app = getMbedApplication(slotIndex);
-    if(app.isValid())
+    if(new_app.isValid())
     {
-      if(app.isNewerThan(getMbedApplication(oldestValueslot)))
-      {
-        slot = oldestValueslot;
-      }
+      app_info[slotIndex].valid = true;
+      app_info[slotIndex].firmwareVersion = new_app.getFirmwareVersion();
     }
     else
+    {
+      app_info[slotIndex].valid = false;
+    }
+  }
+  // Renvoyer l'index de la première application non valide
+  for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
+  {  
+    if (!app_info[slotIndex].valid)
     {
       return slotIndex;
     }
   }
+  // Si toutes les applications sont valides, renvoyer l'index de la plus vieille
+  for (uint32_t slotIndex = 1; slotIndex < m_nbrOfSlots; slotIndex++)
+  {
+    MbedApplication& app_actual = getMbedApplication(slotIndex);
+    MbedApplication& app_previous = getMbedApplication(slotIndex-1);
+    if (app_previous.isNewerThan(app_actual))
+    {
+      return slotIndex;
+    }
+  }
+  tr_debug("Le slot retourné n'est pas correct");
   return slot;
 }
 
