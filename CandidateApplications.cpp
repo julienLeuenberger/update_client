@@ -45,46 +45,26 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
   return *m_candidateApplicationArray[slotIndex];
 }
 
+
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
-  uint32_t oldestValueslot = 0;
-  uint32_t slot = 0;
+  uint32_t oldValidSlot = 0;
 
-  APP_INFO app_info[m_nbrOfSlots];
-  // Remplir un tableau de type APP_INFO
-  for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
+  for(uint32_t slotI = 0; slotI < m_nbrOfSlots; slotI++)
   {
-    MbedApplication& new_app = getMbedApplication(slotIndex);
-    if(new_app.isValid())
-    {
-      app_info[slotIndex].valid = true;
-      app_info[slotIndex].firmwareVersion = new_app.getFirmwareVersion();
-    }
-    else
-    {
-      app_info[slotIndex].valid = false;
-    }
+      if (m_candidateApplicationArray[slotI]->isValid())
+      {
+        if(m_candidateApplicationArray[slotI]->isNewerThan(*m_candidateApplicationArray[oldValidSlot]))
+        {
+            oldValidSlot = slotI;
+        }
+      }
+      else 
+      {
+        return slotI;
+      }
   }
-  // Renvoyer l'index de la première application non valide
-  for (uint32_t slotIndex = 0; slotIndex < m_nbrOfSlots; slotIndex++)
-  {  
-    if (!app_info[slotIndex].valid)
-    {
-      return slotIndex;
-    }
-  }
-  // Si toutes les applications sont valides, renvoyer l'index de la plus vieille
-  for (uint32_t slotIndex = 1; slotIndex < m_nbrOfSlots; slotIndex++)
-  {
-    MbedApplication& app_actual = getMbedApplication(slotIndex);
-    MbedApplication& app_previous = getMbedApplication(slotIndex-1);
-    if (app_previous.isNewerThan(app_actual))
-    {
-      return slotIndex;
-    }
-  }
-  tr_debug("Le slot retourné n'est pas correct");
-  return slot;
+  return oldValidSlot;
 }
 
 int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_t& applicationAddress, uint32_t& slotSize) const {
