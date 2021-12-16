@@ -167,7 +167,7 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
   
   while (nbrOfBytes < copySize) {
     // TODO: read a page from the candidate location and write it to the active application
-
+    m_flashUpdater.writePage(pageSize,(char *) &writePageBuffer, (char *) &readPageBuffer, destAddr, destSectorErased, destPagesFlashed, nextDestSectorAddress);
     // update progress
     nbrOfBytes += pageSize;    
 #if MBED_CONF_MBED_TRACE_ENABLE
