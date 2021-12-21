@@ -45,7 +45,23 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
 
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
-  return 0;
+  uint32_t oldValidSlot = 0;
+
+  for(uint32_t slotI = 0; slotI < m_nbrOfSlots; slotI++)
+  {
+      if (m_candidateApplicationArray[slotI]->isValid())
+      {
+        if(m_candidateApplicationArray[slotI]->isNewerThan(*m_candidateApplicationArray[oldValidSlot]))
+        {
+            oldValidSlot = slotI;
+        }
+      }
+      else 
+      {
+        return slotI;
+      }
+  }
+  return oldValidSlot;
 }
 
 int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_t& applicationAddress, uint32_t& slotSize) const {
@@ -148,7 +164,7 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
   
   while (nbrOfBytes < copySize) {
     // TODO: read a page from the candidate location and write it to the active application
-
+    m_flashUpdater.writePage(pageSize,(char *) &writePageBuffer, (char *) &readPageBuffer, destAddr, destSectorErased, destPagesFlashed, nextDestSectorAddress);
     // update progress
     nbrOfBytes += pageSize;    
 #if MBED_CONF_MBED_TRACE_ENABLE

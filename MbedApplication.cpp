@@ -239,7 +239,7 @@ int32_t MbedApplication::readApplicationHeader() {
   // read magic number and version
   uint8_t version_buffer[8] = { 0 };  
   int err = m_flashUpdater.read(version_buffer, m_applicationHeaderAddress, 8);
-  if (0 == err) {    
+  if (UC_ERR_NONE == err) {    
     // read out header magic
     m_applicationHeader.magic = parseUint32(&version_buffer[0]);
     // read out header magic
@@ -252,8 +252,27 @@ int32_t MbedApplication::readApplicationHeader() {
     switch (m_applicationHeader.headerVersion) {
       case HEADER_VERSION_V2: {
         // TODO : check magic, if successful read the entire header and call parseInternalHeaderV2
-
-      }   
+        result = UC_ERR_NONE;
+        if (m_applicationHeader.magic == HEADER_MAGIC_V2)
+        {
+          tr_debug(" Application header magic is equal to HEADER_MAGIC_V2");
+          
+          uint8_t read_buffer[HEADER_SIZE_V2] = {0};
+          err = m_flashUpdater.read(read_buffer, m_applicationHeaderAddress, HEADER_SIZE_V2);
+          if(err == 0)
+          {
+              result = parseInternalHeaderV2(read_buffer);
+              if(result != UC_ERR_NONE)
+              {
+                  tr_error("Failed header parsing : %d", result);
+              }
+          }
+          else {
+          tr_error("Error when reading flash %d", err);
+          }
+          //result = parseInternalHeaderV2(read_buffer);
+        }  
+      }  
       break;
 
       // Other firmware header versions can be supported here
