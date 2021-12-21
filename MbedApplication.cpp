@@ -90,6 +90,7 @@ bool MbedApplication::isNewerThan(MbedApplication& otherApplication) {
   }
   
   // both applications are valid and not empty
+  tr_debug("Firmware Version Current application %llu, slot %llu", m_applicationHeader.firmwareVersion, otherApplication.m_applicationHeader.firmwareVersion);
   return otherApplication.m_applicationHeader.firmwareVersion < m_applicationHeader.firmwareVersion;
 }
   

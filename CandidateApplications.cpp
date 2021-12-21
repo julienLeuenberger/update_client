@@ -130,6 +130,9 @@ bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeAppl
       // update the newest slot index
       newestSlotIndex = slotIndex;
     }
+    else {
+    tr_debug(" Application on slot %d is older than current application", slotIndex);
+    }
   }
   return newestSlotIndex != m_nbrOfSlots;
 }
@@ -167,7 +170,16 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
   
   while (nbrOfBytes < copySize) {
     // TODO: read a page from the candidate location and write it to the active application
-    m_flashUpdater.writePage(pageSize,(char *) &writePageBuffer, (char *) &readPageBuffer, destAddr, destSectorErased, destPagesFlashed, nextDestSectorAddress);
+    result = m_flashUpdater.readPage(pageSize, writePageBuffer.get(), sourceAddr);
+    if(result != UC_ERR_NONE){
+        tr_err("Problème read");
+        return result;
+    }
+    result = m_flashUpdater.writePage(pageSize, writePageBuffer.get(), readPageBuffer.get(), destAddr, destSectorErased, destPagesFlashed, nextDestSectorAddress);
+    if(result != UC_ERR_NONE){
+        tr_err("Problème write ");
+        return result;
+    }
     // update progress
     nbrOfBytes += pageSize;    
 #if MBED_CONF_MBED_TRACE_ENABLE
