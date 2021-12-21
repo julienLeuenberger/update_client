@@ -6,16 +6,7 @@
 #include "MbedApplication.h"
 #include "FlashUpdater.h"
 
-
-
 namespace update_client {
-
-  
-struct APP_INFO{
-  bool valid;
-  uint64_t firmwareVersion;
-};
-
 
 class CandidateApplications {
 public:
@@ -28,9 +19,9 @@ public:
   bool hasValidNewerApplication(MbedApplication& activeApplication, uint32_t& newestSlotIndex) const;
   // the installApplication method is used by the bootloader application
   // (for which the POST_APPLICATION_ADDR symbol is defined)
-
+#if defined(POST_APPLICATION_ADDR)
   int32_t installApplication(uint32_t slotIndex, uint32_t destHeaderAddress);
-
+#endif
 
 private:
   FlashUpdater& m_flashUpdater;

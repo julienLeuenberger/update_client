@@ -7,8 +7,6 @@
 #define TRACE_GROUP "CandidateApplications"
 #endif // MBED_CONF_MBED_TRACE_ENABLE
 
-
-
 namespace update_client {
 
 CandidateApplications::CandidateApplications(FlashUpdater& flashUpdater, uint32_t storageAddress, uint32_t storageSize, uint32_t headerSize, uint32_t nbrOfSlots) :
@@ -45,26 +43,9 @@ MbedApplication& CandidateApplications::getMbedApplication(uint32_t slotIndex) {
   return *m_candidateApplicationArray[slotIndex];
 }
 
-
 uint32_t CandidateApplications::getSlotForCandidate() { 
   // TODO
-  uint32_t oldValidSlot = 0;
-
-  for(uint32_t slotI = 0; slotI < m_nbrOfSlots; slotI++)
-  {
-      if (m_candidateApplicationArray[slotI]->isValid())
-      {
-        if(m_candidateApplicationArray[slotI]->isNewerThan(*m_candidateApplicationArray[oldValidSlot]))
-        {
-            oldValidSlot = slotI;
-        }
-      }
-      else 
-      {
-        return slotI;
-      }
-  }
-  return oldValidSlot;
+  return 0;
 }
 
 int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_t& applicationAddress, uint32_t& slotSize) const {
@@ -74,18 +55,18 @@ int32_t CandidateApplications::getApplicationAddress(uint32_t slotIndex, uint32_
    // sector boundary and we cannot go outside user defined storage area, hence
    // rounding up to sector boundary
    uint32_t storageStartAddr = m_flashUpdater.alignAddressToSector(m_storageAddress, false);
-   tr_debug(" Storage start address for all slots: 0x%08x", storageStartAddr);
+   tr_debug(" Storage start address (slot %d): 0x%08x", slotIndex, storageStartAddr);
 
    // find the end address of the whole storage area. It needs to be aligned to
    // sector boundary and we cannot go outside user defined storage area, hence
    // rounding down to sector boundary 
    uint32_t storageEndAddr = m_flashUpdater.alignAddressToSector(m_storageAddress + m_storageSize, true);
-   tr_debug(" Storage end addressfor all slots: 0x%08x", storageEndAddr);
+   tr_debug(" Storage end address (slot %d): 0x%08x", slotIndex, storageEndAddr);
    
    // find the maximum size each slot can have given the start and end, without
    // considering the alignment of individual slots
    uint32_t maxSlotSize = (storageEndAddr - storageStartAddr) / m_nbrOfSlots;
-   tr_debug(" maxSlotSize : %d", maxSlotSize);
+   tr_debug(" maxSlotSize (slot %d): %d", slotIndex, maxSlotSize);
 
    // find the start address of slot. It needs to align to sector boundary. We
    // choose here to round down at each slot boundary 
@@ -134,7 +115,7 @@ bool CandidateApplications::hasValidNewerApplication(MbedApplication& activeAppl
   return newestSlotIndex != m_nbrOfSlots;
 }
 
-#ifdef POST_APPLICATION_ADDR
+#if defined(POST_APPLICATION_ADDR)
 int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t destHeaderAddress) {  
   tr_debug(" Installing candidate application at slot %d as active application", slotIndex);
   const uint32_t pageSize = m_flashUpdater.get_page_size();
@@ -167,7 +148,7 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
   
   while (nbrOfBytes < copySize) {
     // TODO: read a page from the candidate location and write it to the active application
-    m_flashUpdater.writePage(pageSize,(char *) &writePageBuffer, (char *) &readPageBuffer, destAddr, destSectorErased, destPagesFlashed, nextDestSectorAddress);
+
     // update progress
     nbrOfBytes += pageSize;    
 #if MBED_CONF_MBED_TRACE_ENABLE
@@ -180,6 +161,5 @@ int32_t CandidateApplications::installApplication(uint32_t slotIndex, uint32_t d
 
   return UC_ERR_NONE;
 }
-
 #endif
 } // namespace
