@@ -61,7 +61,7 @@ void USBSerialUC::downloadFirmware() {
 
       uint32_t candidateApplicationAddress = 0;
       uint32_t slotSize = 0;
-      const uint32_t headerSize = APPLICATION_ADDR - HEADER_ADDR;
+      const uint32_t headerSize = 0x80;
       tr_debug(" Header size is %d", headerSize);  
       update_client::CandidateApplications candidateApplications(flashUpdater, 
                                                                  MBED_CONF_UPDATE_CLIENT_STORAGE_ADDRESS,
